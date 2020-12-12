@@ -133,3 +133,71 @@ class NameDay extends HTMLElement {
     }
 }
 window.customElements.define('name-day', NameDay);
+
+
+
+// Funkcionalita počítania návštev užívatela (cookies) + webkomponent
+let numberOfAccess = 1;
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+
+
+const templateForCounter = document.createElement('template');
+templateForCounter.innerHTML = 
+`<div>
+  <p id="visit"></p>
+</div>
+`;
+
+class countVisits  extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({mode: 'open'});
+        this.shadowRoot.appendChild(templateForCounter.content.cloneNode(true));
+    }
+
+    connectedCallback() {
+      document.addEventListener("DOMContentLoaded", ()=>{
+        var accessCookie = getCookie("accessCookie");
+        if (accessCookie != "") {
+          let tmp = parseInt(accessCookie);
+          tmp = tmp+1;
+          setCookie("accessCookie",tmp,365);
+            
+        } else {
+          setCookie("accessCookie", numberOfAccess, 365);
+            
+        }
+        
+        
+        let text = this.shadowRoot.querySelector('#visit')
+        text.innerText = "Našu stránku ste za poseldný rok navštívili " + getCookie("accessCookie")  +"-krát";
+        
+      
+      });
+      
+
+    }
+}
+window.customElements.define('count-visit', countVisits);
