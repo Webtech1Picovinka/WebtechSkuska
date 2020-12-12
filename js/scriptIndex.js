@@ -38,9 +38,8 @@ customElements.define('menu-menu', MyComponent);
 
 
 
-
+// Webkomponent na zobrazenie dnešných menín; vyhľadávanie menín podľa dátumu a mena
 const template = document.createElement('template');
-
 template.innerHTML =
     `   <div>
         <h2 id="nameday"></h2>
@@ -92,7 +91,7 @@ class NameDay extends HTMLElement {
                 while (i < xmlDoc.getElementsByTagName("zaznam").length) {
                     day = xmlDoc.getElementsByTagName("den")[i];
                     if (day.innerHTML === "" + todayMonth + todayDay) {
-                        todayName.innerText = "Dnes " + todayDay + "." + todayMonth + "." + " má meniny " + day.nextElementSibling.innerHTML;
+                        todayName.innerText = "Kto sa dnes " + todayDay + "." + todayMonth + "." + " nachňápe jak Rus?  --> " + day.nextElementSibling.innerHTML;
                     }
                     i++;
                 }
@@ -106,7 +105,7 @@ class NameDay extends HTMLElement {
                     while (i < xmlDoc.getElementsByTagName("zaznam").length) {
                         dayXML = xmlDoc.getElementsByTagName("den")[i];
                         if (dayXML.innerHTML === customDateString) {
-                            customDayTag.innerText = customDay + "." + customMonth + ". pije " + dayXML.nextElementSibling.innerHTML;
+                            customDayTag.innerText = customDay + "." + customMonth + ". sa dobľuje " + dayXML.nextElementSibling.innerHTML;
                             break;
                         }
                         i++;
@@ -123,7 +122,7 @@ class NameDay extends HTMLElement {
                         dateXML = nameXML.previousElementSibling.innerHTML;
                         if (nameXML.innerHTML.includes(inputNameCapital)) {
 
-                            customNameTag.innerText = nameXML.innerHTML + " slope " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";
+                            customNameTag.innerText = nameXML.innerHTML + " sa zruší " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";
                             break;
                         }
                         i++;
@@ -137,6 +136,7 @@ window.customElements.define('name-day', NameDay);
 
 
 // Funkcionalita počítania návštev užívatela (cookies) + webkomponent
+// Dano to len ujebal z netu ale ticho
 let numberOfAccess = 1;
 
 function setCookie(cname, cvalue, exdays) {
