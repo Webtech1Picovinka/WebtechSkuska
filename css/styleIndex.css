@@ -1,8 +1,15 @@
 head,
-body {
-    height: 100%;
-    margin: 0;
+body{
+    /*background-image: url("background.jpg");*/
+    background-color: rgba(163, 230, 218, 0.596);
+    height: auto;
+    width: 100%;
+    margin: 0 ;
     padding: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
 }
 
 .third-level-menu {
@@ -84,4 +91,15 @@ body {
 
 .top-level-menu a:hover {
     color: #000000;
+}
+
+
+/*footer styling*/
+footer{
+    width:100%; 
+    bottom:0;
+    left:0;
+    color: rgb(253, 253, 253);
+    background-color:  rgba(18, 18, 19, 0.726);
+    text-align: center;
 }
