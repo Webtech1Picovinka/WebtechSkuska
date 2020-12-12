@@ -1,6 +1,4 @@
-head,
-body{
-    /* background-color: rgba(163, 230, 218, 0.596); */
+head, body{
     height: auto;
     width: 100%;
     margin: 0 ;
@@ -8,7 +6,7 @@ body{
     background-repeat: no-repeat;
     background-size: initial;
     background-position: right;
-    background-image: url("../background.jpg");
+    background-image: url("../resources/background.jpg");
 }
 
 .third-level-menu {
