@@ -1,15 +1,14 @@
 head,
 body{
-    /*background-image: url("background.jpg");*/
-    background-color: rgba(163, 230, 218, 0.596);
+    /* background-color: rgba(163, 230, 218, 0.596); */
     height: auto;
     width: 100%;
     margin: 0 ;
     padding: 0;
     background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-
+    background-size: initial;
+    background-position: right;
+    background-image: url("../background.jpg");
 }
 
 .third-level-menu {
@@ -102,4 +101,6 @@ footer{
     color: rgb(253, 253, 253);
     background-color:  rgba(18, 18, 19, 0.726);
     text-align: center;
+    position: absolute;
+    width: 100%;
 }

@@ -192,7 +192,7 @@ class countVisits  extends HTMLElement {
         
         
         let text = this.shadowRoot.querySelector('#visit')
-        text.innerText = "Našu stránku ste za poseldný rok navštívili " + getCookie("accessCookie")  +"-krát";
+        text.innerText = "Našu stránku ste za posledný rok navštívili " + getCookie("accessCookie")  +"-krát";
         
       
       });
