@@ -1,7 +1,48 @@
+class MyComponent extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
+        <ul class="top-level-menu">
+            <li>
+            <a href="#">Tím</a>
+            <ul class="second-level-menu">
+                <li><a href="#">Daniel Nošík</a>
+                    <ul class="third-level-menu">
+                        <li><a href="#">Hra</a></li>
+                        <li><a href="#">Životopis</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Jakub Petrík</a>
+                    <ul class="third-level-menu">
+                        <li><a href="#">Hra</a></li>
+                        <li><a href="#">Životopis</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Martin Žofčík</a>
+                    <ul class="third-level-menu">
+                        <li><a href="#">Hra</a></li>
+                        <li><a href="#">Životopis</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Miroslav Kopecký</a>
+                    <ul class="third-level-menu">
+                        <li><a href="#">Hra</a></li>
+                        <li><a href="#">Životopis</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </ul>
+        `;
+    }
+}
+customElements.define('menu-menu', MyComponent);
+
+
+
+
 const template = document.createElement('template');
 
-template.innerHTML = 
-`   <div>
+template.innerHTML =
+    `   <div>
         <h2 id="nameday"></h2>
 
         <input type="date" id="customDate"></input>
@@ -21,7 +62,7 @@ template.innerHTML =
 class NameDay extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({mode: 'open'});
+        this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
@@ -35,53 +76,58 @@ class NameDay extends HTMLElement {
         var customName = this.shadowRoot.querySelector('#customName');
 
         fetch("resources/meniny.xml")
-            .then(function(resp){
+            .then(function(resp) {
                 return resp.text();
             })
-            .then(function(data){
+            .then(function(data) {
 
                 var parser = new DOMParser();
                 var xmlDoc = parser.parseFromString(data, "text/xml");
-                var i = 0, day, today = new Date(), todayMonth = today.getMonth() + 1, todayDay = today.getDate();
+                var i = 0,
+                    day, today = new Date(),
+                    todayMonth = today.getMonth() + 1,
+                    todayDay = today.getDate();
 
                 var todayMonth = today.getMonth() + 1;
-                while(i < xmlDoc.getElementsByTagName("zaznam").length){
+                while (i < xmlDoc.getElementsByTagName("zaznam").length) {
                     day = xmlDoc.getElementsByTagName("den")[i];
-                    if(day.innerHTML === "" + todayMonth + todayDay){
+                    if (day.innerHTML === "" + todayMonth + todayDay) {
                         todayName.innerText = "Dnes " + todayDay + "." + todayMonth + "." + " má meniny " + day.nextElementSibling.innerHTML;
                     }
                     i++;
                 }
 
                 customDate.addEventListener('change', () => {
-                    var customMonth = customDate.value.slice(5,7);
-                    var customDay = customDate.value.slice(8,10);
+                    var customMonth = customDate.value.slice(5, 7);
+                    var customDay = customDate.value.slice(8, 10);
                     var customDateString = String(customMonth + customDay);
-                    var i = 0, dayXML;
-                    while(i < xmlDoc.getElementsByTagName("zaznam").length){
+                    var i = 0,
+                        dayXML;
+                    while (i < xmlDoc.getElementsByTagName("zaznam").length) {
                         dayXML = xmlDoc.getElementsByTagName("den")[i];
-                        if(dayXML.innerHTML === customDateString){
-                            customDayTag.innerText = customDay + "." + customMonth + ". pije "  + dayXML.nextElementSibling.innerHTML;
+                        if (dayXML.innerHTML === customDateString) {
+                            customDayTag.innerText = customDay + "." + customMonth + ". pije " + dayXML.nextElementSibling.innerHTML;
                             break;
                         }
                         i++;
-                    }                
+                    }
                 });
 
                 customName.addEventListener('change', () => {
                     var inputName = customName.value;
                     var inputNameCapital = inputName[0].toUpperCase() + inputName.slice(1);
-                    var i = 0, nameXML, dateXML;
-                    while(i < xmlDoc.getElementsByTagName("SK").length){
+                    var i = 0,
+                        nameXML, dateXML;
+                    while (i < xmlDoc.getElementsByTagName("SK").length) {
                         nameXML = xmlDoc.getElementsByTagName("SK")[i];
                         dateXML = nameXML.previousElementSibling.innerHTML;
-                        if(nameXML.innerHTML.includes(inputNameCapital)){
+                        if (nameXML.innerHTML.includes(inputNameCapital)) {
 
-                            customNameTag.innerText = nameXML.innerHTML + " slope "  + dateXML.slice(2,4) + "." + dateXML.slice(0,2) + ".";
+                            customNameTag.innerText = nameXML.innerHTML + " slope " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";
                             break;
                         }
                         i++;
-                    }                
+                    }
                 });
             })
     }
