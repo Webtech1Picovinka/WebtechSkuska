@@ -89,3 +89,14 @@ body {
 .top-level-menu a:hover {
     color: #000000;
 }
+
+
+/*footer styling*/
+footer{
+    width:100%; 
+    bottom:0;
+    left:0;
+    color: rgb(253, 253, 253);
+    background-color:  rgba(18, 18, 19, 0.726);
+    text-align: center;
+}
