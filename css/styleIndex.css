@@ -32,8 +32,8 @@ body {
 
 .second-level-menu {
     position: absolute;
-    top: 0;
-    right: -150px;
+    top: 30px;
+    left: 0;
     width: 150px;
     list-style: none;
     padding: 0;
@@ -42,6 +42,7 @@ body {
 }
 
 .second-level-menu>li {
+    z-index: 1;
     color: white;
     position: relative;
     height: 30px;
@@ -55,7 +56,7 @@ body {
 
 .top-level-menu {
     list-style: none;
-    padding: 0;
+    padding: 0px 0px 50px 0px;
     margin: 0;
 }
 
