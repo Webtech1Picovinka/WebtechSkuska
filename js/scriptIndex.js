@@ -1,32 +1,33 @@
+//webkomponent 3-urovnove menu
 class MyComponent extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
         <ul class="top-level-menu">
             <li>
-            <a href="#">Tím</a>
+            <a href="html/tim.html">Tím</a>
             <ul class="second-level-menu">
-                <li><a href="#">Daniel Nošík</a>
+                <li><a>Daniel Nošík</a>
                     <ul class="third-level-menu">
-                        <li><a href="#">Hra</a></li>
-                        <li><a href="#">Životopis</a></li>
+                        <li><a href="html/gameDano.html">Hra</a></li>
+                        <li><a href="html/aboutDano.html">Životopis</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Jakub Petrík</a>
+                <li><a>Jakub Petrík</a>
                     <ul class="third-level-menu">
-                        <li><a href="#">Hra</a></li>
-                        <li><a href="#">Životopis</a></li>
+                        <li><a href="html/gameKubo.html">Hra</a></li>
+                        <li><a href="html/aboutKubo.html">Životopis</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Martin Žofčík</a>
+                <li><a>Martin Žofčík</a>
                     <ul class="third-level-menu">
-                        <li><a href="#">Hra</a></li>
-                        <li><a href="#">Životopis</a></li>
+                        <li><a href="html/gameMartin.html">Hra</a></li>
+                        <li><a href="html/aboutMartin.html">Životopis</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Miroslav Kopecký</a>
+                <li><a>Miroslav Kopecký</a>
                     <ul class="third-level-menu">
-                        <li><a href="#">Hra</a></li>
-                        <li><a href="#">Životopis</a></li>
+                        <li><a href="html/gameMiro.html">Hra</a></li>
+                        <li><a href="html/aboutMiro.html">Životopis</a></li>
                     </ul>
                 </li>
             </ul>

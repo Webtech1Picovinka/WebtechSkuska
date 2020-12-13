@@ -1,12 +1,13 @@
-head, body{
+head,
+body {
     height: auto;
     width: 100%;
-    margin: 0 ;
-    padding: 0;
+    margin: 0;
     background-repeat: no-repeat;
     background-size: initial;
     background-position: right;
     background-image: url("../resources/background.jpg");
+    background-attachment: fixed;
 }
 
 .third-level-menu {
@@ -31,8 +32,8 @@ head, body{
 
 .second-level-menu {
     position: absolute;
-    top: 30px;
-    left: 0;
+    top: 0;
+    right: -150px;
     width: 150px;
     list-style: none;
     padding: 0;
@@ -41,6 +42,7 @@ head, body{
 }
 
 .second-level-menu>li {
+    color: white;
     position: relative;
     height: 30px;
     background: #999999;
@@ -48,6 +50,7 @@ head, body{
 
 .second-level-menu>li:hover {
     background: #CCCCCC;
+    color: black;
 }
 
 .top-level-menu {
