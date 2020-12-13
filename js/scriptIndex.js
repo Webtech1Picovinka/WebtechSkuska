@@ -41,6 +41,7 @@ customElements.define('menu-menu', MyComponent);
 
 // Webkomponent na zobrazenie dnešných menín; vyhľadávanie menín podľa dátumu a mena
 const template = document.createElement('template');
+
 template.innerHTML =
     `   <div>
         <h3 id="nameday"></h3>
@@ -142,8 +143,6 @@ class NameDay extends HTMLElement {
     }
 }
 window.customElements.define('name-day', NameDay);
-
-
 
 // Funkcionalita počítania návštev užívatela (cookies) + webkomponent
 // Dano to len ujebal z netu ale ticho
