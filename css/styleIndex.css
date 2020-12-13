@@ -3,13 +3,12 @@ body {
     height: auto;
     width: 100%;
     margin: 0;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-size: initial;
-    background-position: right;
-    background-image: url("../resources/background.jpg");
+    background-position: center;
+    background-image: url("../resources/bg.jpg");
     background-attachment: fixed;
 }
-
 
 .third-level-menu {
     position: absolute;
