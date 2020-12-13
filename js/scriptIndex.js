@@ -43,18 +43,27 @@ customElements.define('menu-menu', MyComponent);
 const template = document.createElement('template');
 template.innerHTML =
     `   <div>
-        <h2 id="nameday"></h2>
+        <h3 id="nameday"></h3>
 
-        <input type="date" id="customDate"></input>
+        <div class="form-group">
+            <label for="customDate">Vyberte dátum</label>
+            <input type="date" id="customDate" class="form-control col-6"  name="customDate" >
+        </div>
 
-        <h2 id="customdaytag"></h2>
+        <h3 id="customdaytag"></h3>
 
-        <input type="text" id="customName"></input>
+        <div class="form-group">
+            <label for="customName">Napíšte meno</label>
+            <input type="text" id="customName" class="form-control col-6" name="customName">
+        </div>
 
-        <h2 id="customnametag"></h2>
+        <h3 id="customnametag"></h3>
 
 
-        <style></style>
+        <style>
+            @import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
+
+        </style>
     </div> 
 `;
 
@@ -92,7 +101,7 @@ class NameDay extends HTMLElement {
                 while (i < xmlDoc.getElementsByTagName("zaznam").length) {
                     day = xmlDoc.getElementsByTagName("den")[i];
                     if (day.innerHTML === "" + todayMonth + todayDay) {
-                        todayName.innerText = "Kto sa dnes " + todayDay + "." + todayMonth + "." + " nachňápe jak Rus?  --> " + day.nextElementSibling.innerHTML;
+                        todayName.innerText = "Kto sa dnes " + todayDay + "." + todayMonth + "." + " nachňápe jak riť?  --> " + day.nextElementSibling.innerHTML;
                     }
                     i++;
                 }
