@@ -48,14 +48,14 @@ template.innerHTML =
 
         <div class="form-group">
             <label for="customDate">Vyberte dátum</label>
-            <input type="date" id="customDate" class="form-control col-6"  name="customDate" >
+            <input type="date" id="customDate" class="form-control col-6"  name="customDate" placeholder="Zadajte dátum -> dd.mm.">
         </div>
 
         <h3 id="customdaytag"></h3>
 
         <div class="form-group">
             <label for="customName">Napíšte meno</label>
-            <input type="text" id="customName" class="form-control col-6" name="customName">
+            <input type="text" id="customName" class="form-control col-6" name="customName" placeholder="Zadajte meno">
         </div>
 
         <h3 id="customnametag"></h3>
@@ -111,8 +111,12 @@ class NameDay extends HTMLElement {
                     var customMonth = customDate.value.slice(5, 7);
                     var customDay = customDate.value.slice(8, 10);
                     var customDateString = String(customMonth + customDay);
-                    var i = 0,
-                        dayXML;
+                    var i = 0, dayXML;
+
+                    // customDate = customDate.value;
+                    // ten regex je taky vselijaky, Miro az mas cas tak ho pls oprav
+                    // var regex = new RegExp("^([0-3])?[0-9][.]([0-1])?[0-12][.]$");
+                    // if(regex.test(customDate)){
                     while (i < xmlDoc.getElementsByTagName("zaznam").length) {
                         dayXML = xmlDoc.getElementsByTagName("den")[i];
                         if (dayXML.innerHTML === customDateString) {
@@ -121,6 +125,7 @@ class NameDay extends HTMLElement {
                         }
                         i++;
                     }
+                    // }
                 });
 
                 customName.addEventListener('change', () => {
