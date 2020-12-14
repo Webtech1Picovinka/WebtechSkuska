@@ -42,25 +42,32 @@ customElements.define('menu-menu', MyComponent);
 // Webkomponent na zobrazenie dnešných menín; vyhľadávanie menín podľa dátumu a mena
 const template = document.createElement('template');
 
+//definovanie sablony
 template.innerHTML =
     `   <div>
+        
+        <!-- vypis dnesnych menin aj s datumom -->
         <h3 id="nameday"></h3>
 
+        <!-- zadanie custom datumu pre ktory chceme meniny -->
         <div class="form-group">
             <label for="customDate">Vyberte dátum</label>
             <input type="date" id="customDate" class="form-control col-6"  name="customDate" placeholder="Zadajte dátum -> dd.mm.">
         </div>
 
+        <!-- vypis menin vybraneho dna aj s datumom -->
         <h3 id="customdaytag"></h3>
 
+        <!-- zadanie mena pre ktore chceme zistit datum -->
         <div class="form-group">
             <label for="customName">Napíšte meno</label>
             <input type="text" id="customName" class="form-control col-6" name="customName" placeholder="Zadajte meno">
         </div>
 
+        <!-- vypis dna kedy ma vybrane meno meniny aj s menom -->
         <h3 id="customnametag"></h3>
 
-
+        <!-- import bootstrapu do custom elementu -->
         <style>
             @import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
 
@@ -70,6 +77,8 @@ template.innerHTML =
 
 
 class NameDay extends HTMLElement {
+
+    //toto ani srnka netusi naco to tu je, ale asi nejaky konstruktor
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -77,6 +86,7 @@ class NameDay extends HTMLElement {
     }
 
     connectedCallback() {
+        //vytiahnutie ideciek z html, podobne ako getElementById() ale v custom elemente
         var todayName = this.shadowRoot.querySelector('#nameday');
 
         var customDayTag = this.shadowRoot.querySelector('#customdaytag');
@@ -85,38 +95,49 @@ class NameDay extends HTMLElement {
         var customNameTag = this.shadowRoot.querySelector('#customnametag');
         var customName = this.shadowRoot.querySelector('#customName');
 
+        //nacitanie xml suboru s meninami cez fetch()
         fetch("resources/meniny.xml")
             .then(function(resp) {
                 return resp.text();
             })
+            //
             .then(function(data) {
-
+                // Toto je elektro ty omezený ko-kot-ko, najlepší hip hop festival tu robí jo-po-po,
                 var parser = new DOMParser();
+                // nacitanie xml suboru do premennej xmlDoc
                 var xmlDoc = parser.parseFromString(data, "text/xml");
                 var i = 0,
                     day, today = new Date(),
-                    todayMonth = today.getMonth() + 1,
-                    todayDay = today.getDate();
+                    todayDay = today.getDate(), //vrati den v mesiaci
+                    todayMonth = today.getMonth() + 1; // getMonth() vracia mesiace od 0-januar po 11-december, preto + 1
 
-                var todayMonth = today.getMonth() + 1;
+                //prehladavanie celeho suboru, strasne neefektivne lebo sa to robi spolu 3x, lepsie by bolo dat to do pola a ptm porovnavt s polom, ale neoplati sa s tym trapit, body za to nestrhnu hadam
                 while (i < xmlDoc.getElementsByTagName("zaznam").length) {
                     day = xmlDoc.getElementsByTagName("den")[i];
+                    // ak sa dnesny datum zhoduje s datumom v tagu <den> v xml subore, vypise ho aj s meninami
                     if (day.innerHTML === "" + todayMonth + todayDay) {
                         todayName.innerText = "Kto sa dnes " + todayDay + "." + todayMonth + "." + " nachňápe jak riť?  --> " + day.nextElementSibling.innerHTML;
                     }
                     i++;
                 }
 
+                // to iste ako vyssie, len to berie custom datum, nie dnesny datum
+                // pridanie addeventlisteneru, ak sa datum v inpute zmeni, treba prehladat subor a najst nove meno
                 customDate.addEventListener('change', () => {
-                    var customMonth = customDate.value.slice(5, 7);
-                    var customDay = customDate.value.slice(8, 10);
-                    var customDateString = String(customMonth + customDay);
-                    var i = 0, dayXML;
+                    // spracovanie udajov zo vstupu, datum musi byt v presnom formate, trebalo by prerobit podla zadania
+                    var customMonth = customDate.value.slice(5, 7), //slice(start, end) orezava dany string
+                        customDay = customDate.value.slice(8, 10),
+                        customDateString = String(customMonth + customDay),
+                        i = 0,
+                        dayXML;
 
+                    //pokus spravit validaciu datumu cez regex, ak sa o to niekto pokusa tak treba v template zmenit <input id="customDate">
+                                                    // z typu date na text, aby sa dal zadat custom datum ako text nie len vyberat z kalendara
                     // customDate = customDate.value;
-                    // ten regex je taky vselijaky, Miro az mas cas tak ho pls oprav
                     // var regex = new RegExp("^([0-3])?[0-9][.]([0-1])?[0-12][.]$");
                     // if(regex.test(customDate)){
+
+                    //prehladavanie suboru, dokym nenajde meno v dany datum
                     while (i < xmlDoc.getElementsByTagName("zaznam").length) {
                         dayXML = xmlDoc.getElementsByTagName("den")[i];
                         if (dayXML.innerHTML === customDateString) {
@@ -128,17 +149,21 @@ class NameDay extends HTMLElement {
                     // }
                 });
 
+                //zase to iste co vyssie, ale tu hlada podla menin a vypisuje den kedy ma ten šupák meniny
                 customName.addEventListener('change', () => {
                     var inputName = customName.value;
                     var inputNameCapital = inputName[0].toUpperCase() + inputName.slice(1);
                     var i = 0,
                         nameXML, dateXML;
+                    
+                    //maximalne ide len pocetDniKedyMaNiektoMeniny-krat, lebo nie kazdy den ma niekto meniny - napr 1.1.
                     while (i < xmlDoc.getElementsByTagName("SK").length) {
                         nameXML = xmlDoc.getElementsByTagName("SK")[i];
+                        //previousElementSibling zobrazi predchadzajuceho surodenca tagu v xml subore
                         dateXML = nameXML.previousElementSibling.innerHTML;
-                        if (nameXML.innerHTML.includes(inputNameCapital)) {
-
+                        if (nameXML.innerHTML.includes(inputNameCapital)) { // ak meno obsahuje substring ktory sme zadali, vypise
                             customNameTag.innerText = nameXML.innerHTML + " sa zruší " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";
+                                                                                                //slice(start, end) orezava dany string
                             break;
                         }
                         i++;
@@ -147,6 +172,7 @@ class NameDay extends HTMLElement {
             })
     }
 }
+//pridanie do html
 window.customElements.define('name-day', NameDay);
 
 // Funkcionalita počítania návštev užívatela (cookies) + webkomponent
@@ -190,6 +216,19 @@ class countVisits  extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(templateForCounter.content.cloneNode(true));
     }
+
+    // Toto je elektro ty omezený ko-kot-ko,
+    // najlepší hip hop festival tu robí jo-po-po,
+    // jak hovorí Rosaldo Rytmus je king po po-po-po,
+    // big mikiny, šiltovky, kapsáče dovi dopo yeau,
+    // každý dávno pochopil, že já udávam štýýl,
+    // ja chcem robiť párty za love a to je re-re-real,
+    // nikdy som sa žádnému gadžovi neprosiil,
+    // tak si pusti Wu-Tang keď si to nepochopiil,
+    // myslite si že to budem robiť podla vás,
+    // hateri sú v piči já zarabámm ešte váááác,
+    // popritom si spievam iba také nananáá,
+    // s týmto textom mi pomáhala moja mamááááá.
 
     connectedCallback() {
       document.addEventListener("DOMContentLoaded", ()=>{
