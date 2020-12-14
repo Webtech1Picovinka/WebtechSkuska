@@ -47,7 +47,7 @@ template.innerHTML =
     `   <div>
         
         <!-- vypis dnesnych menin aj s datumom -->
-        <h3 id="nameday"></h3>
+        <h3 id="nameday"></h3><br>
 
         <!-- zadanie custom datumu pre ktory chceme meniny -->
         <div class="form-group">
@@ -58,7 +58,7 @@ template.innerHTML =
         </div>
 
         <!-- vypis menin vybraneho dna aj s datumom -->
-        <h3 id="customDateTag"></h3>
+        <h3 id="customDateTag">aaa</h3><br>
 
         <!-- zadanie mena pre ktore chceme zistit datum -->
         <div class="form-group">
@@ -67,7 +67,7 @@ template.innerHTML =
         </div>
 
         <!-- vypis dna kedy ma vybrane meno meniny aj s menom -->
-        <h3 id="customnametag"></h3>
+        <h3 id="customNameTag">aaa</h3>
 
         <!-- import bootstrapu do custom elementu -->
         <style>
@@ -77,6 +77,11 @@ template.innerHTML =
             #invalidName{
                 color: red;
                 display: none;
+            }
+
+            #customDateTag,
+            #customNameTag{
+                visibility: hidden;
             }
 
         </style>
@@ -100,7 +105,7 @@ class NameDay extends HTMLElement {
             customDateTag = this.shadowRoot.querySelector('#customDateTag'),
             customDate = this.shadowRoot.querySelector('#customDate'),
 
-            customNameTag = this.shadowRoot.querySelector('#customnametag'),
+            customNameTag = this.shadowRoot.querySelector('#customNameTag'),
             customName = this.shadowRoot.querySelector('#customName'),
 
             invalidDate = this.shadowRoot.querySelector('#invalidDate'),
@@ -130,7 +135,7 @@ class NameDay extends HTMLElement {
                     // ak sa dnesny datum zhoduje s datumom v tagu <den> v xml subore, vypise ho aj s meninami
                     if (day.innerHTML === "" + todayMonth + todayDay) {
 
-                        todayName.innerText = "Kto sa dnes " + todayDay + "." + todayMonth + "." + " nachňápe jak riť?  --> " + day.nextElementSibling.innerHTML;
+                        todayName.innerText = "Dnes " + todayDay + "." + todayMonth + "." + " má meniny " + day.nextElementSibling.innerHTML;
                     }
                     i++;
                 }
@@ -165,8 +170,8 @@ class NameDay extends HTMLElement {
 
                             dayXML = xmlDoc.getElementsByTagName("den")[i];//do dayXML sa vlozi datum aktualneho tagu v xml
                             if (dayXML.innerHTML === ("" + splitstring[1] + splitstring[0])) {
-
-                                customDateTag.innerText = splitstring[0] + "." + splitstring[1] + ". sa dobľuje " + dayXML.nextElementSibling.innerHTML;
+                                customDateTag.style.visibility = 'visible';
+                                customDateTag.innerText = splitstring[0] + "." + splitstring[1] + ". má meniny " + dayXML.nextElementSibling.innerHTML;
                                 break;
                             }
                             i++;
@@ -191,7 +196,8 @@ class NameDay extends HTMLElement {
                         //previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
                         dateXML = nameXML.previousElementSibling.innerHTML;
                         if (nameXML.innerHTML.includes(inputNameCapital)) { // ak meno obsahuje substring ktory sme zadali, vypise
-                            customNameTag.innerText = nameXML.innerHTML + " sa zruší " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";
+                            customNameTag.style.visibility = 'visible';
+                            customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";
                                                                                                 //slice(start, end) orezava dany string
                             break;
                         }
