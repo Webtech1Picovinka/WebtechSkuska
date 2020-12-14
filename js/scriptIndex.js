@@ -2,11 +2,31 @@
 function removeDiacritics(str) {
     var map = { ///pls doplnit, aj velke pismena; VELKE staci len tie na ktore zacina nejake meno, napr velke ä netreba
         'a' : 'á|ä',
-        'A' : 'Á',
+        'c' : 'č',
+        'd' : 'ď',
         'e' : 'é',
         'i' : 'í',
+        'l' : 'ĺ|ľ',
+        'n' : 'ň',
         'o' : 'ó|ô',
+        's' : 'š',
+        't' : 'ť',
         'u' : 'ú',
+        'y' : 'ý',
+        'z' : 'ž',
+        'A' : 'Á',
+        'C' : 'Č',
+        'D' : 'Ď',
+        'E' : 'É',
+        'I' : 'Í',
+        'L' : 'Ĺ|Ľ',
+        'N' : 'Ň',
+        'O' : 'Ó|Ô',
+        'S' : 'Š',
+        'T' : 'Ť',
+        'U' : 'Ú',
+        'Y' : 'Ý',
+        'Z' : 'Ž',
     };
     
     for (var pattern in map) {
