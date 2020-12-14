@@ -1,3 +1,22 @@
+//funkcia ktora odstrani specialne slovenske znaky a nahradi ich normalnymi
+function removeDiacritics(str) {
+    var map = { ///pls doplnit, aj velke pismena; VELKE staci len tie na ktore zacina nejake meno, napr velke ä netreba
+        'a' : 'á|ä',
+        'A' : 'Á',
+        'e' : 'é',
+        'i' : 'í',
+        'o' : 'ó|ô',
+        'u' : 'ú',
+    };
+    
+    for (var pattern in map) {
+        str = str.replace(new RegExp(map[pattern], 'g'), pattern);
+    };
+
+    return str;
+};
+
+
 //webkomponent 3-urovnove menu
 class MyComponent extends HTMLElement {
     connectedCallback() {
@@ -64,6 +83,7 @@ template.innerHTML =
         <div class="form-group">
             <label for="customName">Napíšte meno</label>
             <input type="text" id="customName" class="form-control col-6" name="customName" placeholder="Zadajte meno">
+            <small id="invalidName">Nesprávne meno!</small>
         </div>
 
         <!-- vypis dna kedy ma vybrane meno meniny aj s menom -->
@@ -109,10 +129,10 @@ class NameDay extends HTMLElement {
             customName = this.shadowRoot.querySelector('#customName'),
 
             invalidDate = this.shadowRoot.querySelector('#invalidDate'),
-            customName = this.shadowRoot.querySelector('#customName');
+            invalidName = this.shadowRoot.querySelector('#invalidName');
 
 
-        //nacitanie xml suboru s meninami cez fetch()
+        //nacitanie xml suboru s meninami
         fetch("resources/meniny.xml")
             .then(function(resp) {
                 return resp.text();
@@ -135,10 +155,12 @@ class NameDay extends HTMLElement {
                     // ak sa dnesny datum zhoduje s datumom v tagu <den> v xml subore, vypise ho aj s meninami
                     if (day.innerHTML === "" + todayMonth + todayDay) {
 
-                        todayName.innerText = "Dnes " + todayDay + "." + todayMonth + "." + " má meniny " + day.nextElementSibling.innerHTML;
+                        todayName.innerText = "Dnes " + todayDay + "." + todayMonth + "." + " má meniny " + day.nextElementSibling.innerHTML;//vytvori tex ktory sa vypise na obrazovku
                     }
                     i++;
                 }
+
+
 
                 // to iste ako vyssie, len to berie custom datum, nie dnesny datum
                 // pridanie addeventlisteneru, ak sa datum v inpute zmeni, treba prehladat subor a najst nove meno
@@ -147,8 +169,7 @@ class NameDay extends HTMLElement {
                     var i = 0,
                         dayXML,
                         regex = new RegExp("^\\d{1,2}[.]\\d{1,2}[.]$", "g"),//prepusti len platny datum bez roku oddeleny bodkami
-                        customDateVal = customDate.value,
-                        correctDate = regex.test(customDate.value), // true ak splna podmienky regexu, inak false
+                        correctDate = regex.test(customDate.value), // true ak vstup splna podmienky regexu, inak false
                         splitstring = customDate.value.split('.');//rozdeli vstupny string do pola, oddelovac je bodka
                 
                     // uprava dna a mesiaca z vstupu
@@ -163,15 +184,15 @@ class NameDay extends HTMLElement {
 
                     // ak je datum spravny, prehladava sa xml
                     if(correctDate == true  &&  (splitstring[0] <= 31 && splitstring[0] > 0)   &&  (splitstring[1] <= 12 && splitstring[1] > 0)) {
-                        
                         invalidDate.style.display = 'none'; // ak je datum spravny, napoveda sa skryje
 
                         while (i < xmlDoc.getElementsByTagName("zaznam").length) {//pokial je i mensie ako pocet tagov <zaznam> v xml
-
                             dayXML = xmlDoc.getElementsByTagName("den")[i];//do dayXML sa vlozi datum aktualneho tagu v xml
+
                             if (dayXML.innerHTML === ("" + splitstring[1] + splitstring[0])) {
-                                customDateTag.style.visibility = 'visible';
-                                customDateTag.innerText = splitstring[0] + "." + splitstring[1] + ". má meniny " + dayXML.nextElementSibling.innerHTML;
+
+                                customDateTag.style.visibility = 'visible';//ak je tag skryty, zobrazi ho
+                                customDateTag.innerText = splitstring[0] + "." + splitstring[1] + ". má meniny " + dayXML.nextElementSibling.innerHTML;//vytvori tex ktory sa vypise na obrazovku
                                 break;
                             }
                             i++;
@@ -183,25 +204,42 @@ class NameDay extends HTMLElement {
                     }
                 });
 
-                //zase to iste co vyssie, ale tu hlada podla menin a vypisuje den kedy ma ten šupák meniny
+
+
+                //zase to iste co vyssie, ale tu hlada podla mena a vypisuje den kedy ma ten šupák meniny
                 customName.addEventListener('change', () => {
-                    var inputName = customName.value;
-                    var inputNameCapital = inputName[0].toUpperCase() + inputName.slice(1);
                     var i = 0,
-                        nameXML, dateXML;
+                        nameXML, 
+                        dateXML,
+                        inputNameCapital = customName.value[0].toUpperCase() + customName.value.slice(1),//ak uzivatel zada meno s malym pismenom na zaciatku, da ho na velke
+                        regex = new RegExp("^[^0-9]{1,}$"),//prepusti len pismena, cisla nie
+                        correctName = regex.test(customName.value),// true ak vstup splna podmienky regexu, inak false
+                        inputNameCapitalWithoutDiacritics = removeDiacritics(inputNameCapital);
                     
-                    //maximalne ide len pocetDniKedyMaNiektoMeniny-krat, lebo nie kazdy den ma niekto meniny - napr 1.1.
-                    while (i < xmlDoc.getElementsByTagName("SK").length) { //pokial je i mensie ako pocet tagov <SK> v xml (tag <SK> = meniny na SVK)
-                        nameXML = xmlDoc.getElementsByTagName("SK")[i];
-                        //previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
-                        dateXML = nameXML.previousElementSibling.innerHTML;
-                        if (nameXML.innerHTML.includes(inputNameCapital)) { // ak meno obsahuje substring ktory sme zadali, vypise
-                            customNameTag.style.visibility = 'visible';
-                            customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";
-                                                                                                //slice(start, end) orezava dany string
-                            break;
+                    if(correctName == true){
+                        invalidName.style.display = 'none';// ak je meno spravne, upozornenie sa skryje
+
+                        //maximalne ide len pocetDniKedyMaNiektoMeniny-krat, lebo nie kazdy den ma niekto meniny - napr 1.1.
+                        while (i < xmlDoc.getElementsByTagName("SK").length) { //pokial je i mensie ako pocet tagov <SK> v xml (tag <SK> = meniny na SVK)
+                            nameXML = xmlDoc.getElementsByTagName("SK")[i];
+                            dateXML = nameXML.previousElementSibling.innerHTML;//previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
+                            //nameXML = removeDiacritics(nameXML.toString());
+
+                            console.log(nameXML.innerHTML);
+
+                            // if (nameXML.innerHTML.includes()) { // ak meno v xml obsahuje substring ktory sme zadali
+
+                            //     customNameTag.style.visibility = 'visible';
+                            //     customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
+                            //                                                                         //slice(start, end) orezava dany string
+                            //     break;
+                            // }
+                            i++;
                         }
-                        i++;
+                    }
+                    else{
+                        //ak je meno nespravne zadane, zobrazi sa upozornenie
+                        invalidName.style.display = 'block';
                     }
                 });
             })
@@ -210,8 +248,10 @@ class NameDay extends HTMLElement {
 //pridanie do html
 window.customElements.define('name-day', NameDay);
 
+
+
+
 // Funkcionalita počítania návštev užívatela (cookies) + webkomponent
-// Dano to len ujebal z netu ale ticho
 let numberOfAccess = 1;
 
 function setCookie(cname, cvalue, exdays) {
@@ -251,17 +291,7 @@ class countVisits  extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(templateForCounter.content.cloneNode(true));
     }
-
-    // Toto je elektro ty omezený ko-kot-ko,
-    // najlepší hip hop festival tu robí jo-po-po,
-    // jak hovorí Rosaldo Rytmus je king po po-po-po,
-    // big mikiny, šiltovky, kapsáče dovi dopo yeau,
-    // každý dávno pochopil, že já udávam štýýl,
-    // ja chcem robiť párty za love a to je re-re-real,
-    // nikdy som sa žádnému gadžovi neprosiil,
-    // tak si pusti Wu-Tang keď si to nepochopiil,
-    // myslite si že to budem robiť podla vás,
-    // hateri sú v piči já zarabámm ešte váááác,
+    // ...hateri sú v piči já zarabámm ešte váááác,
     // popritom si spievam iba také nananáá,
     // s týmto textom mi pomáhala moja mamááááá.
 
