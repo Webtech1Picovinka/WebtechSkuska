@@ -12,7 +12,6 @@ function removeDiacritics(str) {
     for (var pattern in map) {
         str = str.replace(new RegExp(map[pattern], 'g'), pattern);
     };
-
     return str;
 };
 
@@ -210,6 +209,8 @@ class NameDay extends HTMLElement {
                 customName.addEventListener('change', () => {
                     var i = 0,
                         nameXML, 
+                        arrayOfNamesXML,
+                        nameXMLWithoutDiacritics,
                         dateXML,
                         inputNameCapital = customName.value[0].toUpperCase() + customName.value.slice(1),//ak uzivatel zada meno s malym pismenom na zaciatku, da ho na velke
                         regex = new RegExp("^[^0-9]{1,}$"),//prepusti len pismena, cisla nie
@@ -223,11 +224,15 @@ class NameDay extends HTMLElement {
                         while (i < xmlDoc.getElementsByTagName("SK").length) { //pokial je i mensie ako pocet tagov <SK> v xml (tag <SK> = meniny na SVK)
                             nameXML = xmlDoc.getElementsByTagName("SK")[i];
                             dateXML = nameXML.previousElementSibling.innerHTML;//previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
-                            //nameXML = removeDiacritics(nameXML.toString());
+                            nameXMLWithoutDiacritics = removeDiacritics(nameXML.innerHTML);
+                            arrayOfNamesXML = nameXMLWithoutDiacritics.split(',');
+                            // if (arrayOfNamesXML[1]){
+                            //     arrayOfNamesXML[1].trim();
+                            // }
 
-                            console.log(nameXML.innerHTML);
+                            console.log(arrayOfNamesXML[0] +  arrayOfNamesXML[1]);
 
-                            // if (nameXML.innerHTML.includes()) { // ak meno v xml obsahuje substring ktory sme zadali
+                            // if (nameXMLWithoutDiacritics.innerHTML.includes()) { // ak meno v xml obsahuje substring ktory sme zadali
 
                             //     customNameTag.style.visibility = 'visible';
                             //     customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
