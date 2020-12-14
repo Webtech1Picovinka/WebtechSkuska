@@ -231,6 +231,9 @@ class NameDay extends HTMLElement {
                         nameXML, 
                         arrayOfNamesXML,
                         nameXMLWithoutDiacritics,
+                        arrayOfNamesWithoutDiacriticXML,
+                        array0Equals,
+                        array1Equals,
                         dateXML,
                         inputNameCapital = customName.value[0].toUpperCase() + customName.value.slice(1),//ak uzivatel zada meno s malym pismenom na zaciatku, da ho na velke
                         regex = new RegExp("^[^0-9]{1,}$"),//prepusti len pismena, cisla nie
@@ -245,20 +248,28 @@ class NameDay extends HTMLElement {
                             nameXML = xmlDoc.getElementsByTagName("SK")[i];
                             dateXML = nameXML.previousElementSibling.innerHTML;//previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
                             nameXMLWithoutDiacritics = removeDiacritics(nameXML.innerHTML);
-                            arrayOfNamesXML = nameXMLWithoutDiacritics.split(',');
-                            // if (arrayOfNamesXML[1]){
-                            //     arrayOfNamesXML[1].trim();
-                            // }
+                            arrayOfNamesWithoutDiacriticXML = nameXMLWithoutDiacritics.split(',');
 
-                            console.log(arrayOfNamesXML[0] +  arrayOfNamesXML[1]);
+                            if(arrayOfNamesWithoutDiacriticXML[1]){
 
-                            // if (nameXMLWithoutDiacritics.innerHTML.includes()) { // ak meno v xml obsahuje substring ktory sme zadali
+                                if (arrayOfNamesWithoutDiacriticXML[0] === inputNameCapitalWithoutDiacritics) {
+                                    customNameTag.style.visibility = 'visible';
+                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
+                                    }
 
-                            //     customNameTag.style.visibility = 'visible';
-                            //     customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
-                            //                                                                         //slice(start, end) orezava dany string
-                            //     break;
-                            // }
+                                if (arrayOfNamesWithoutDiacriticXML[1].trim() === inputNameCapitalWithoutDiacritics){
+                                    customNameTag.style.visibility = 'visible';
+                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
+                                    }
+
+                            }
+                            else{
+                                // array0Equals = arrayOfNamesWithoutDiacriticXML[0].equals(inputNameCapitalWithoutDiacritics.toString());
+                                if (arrayOfNamesWithoutDiacriticXML[0] === inputNameCapitalWithoutDiacritics) {
+                                    customNameTag.style.visibility = 'visible';
+                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
+                                    }
+                            }
                             i++;
                         }
                     }
