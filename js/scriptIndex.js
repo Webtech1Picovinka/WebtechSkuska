@@ -52,11 +52,13 @@ template.innerHTML =
         <!-- zadanie custom datumu pre ktory chceme meniny -->
         <div class="form-group">
             <label for="customDate">Vyberte dátum</label>
-            <input type="date" id="customDate" class="form-control col-6"  name="customDate" placeholder="Zadajte dátum -> dd.mm.">
+            <input type="text" id="customDate" class="form-control col-6"  name="customDate" placeholder="Zadajte dátum -> dd.mm.">
+            <small id="invalidDate">Nesprávny dátum! (dd.mm.)</small>
+
         </div>
 
         <!-- vypis menin vybraneho dna aj s datumom -->
-        <h3 id="customdaytag"></h3>
+        <h3 id="customDateTag"></h3>
 
         <!-- zadanie mena pre ktore chceme zistit datum -->
         <div class="form-group">
@@ -69,7 +71,13 @@ template.innerHTML =
 
         <!-- import bootstrapu do custom elementu -->
         <style>
-            @import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
+            @import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+
+            #invalidDate,
+            #invalidName{
+                color: red;
+                display: none;
+            }
 
         </style>
     </div> 
@@ -87,13 +95,17 @@ class NameDay extends HTMLElement {
 
     connectedCallback() {
         //vytiahnutie ideciek z html, podobne ako getElementById() ale v custom elemente
-        var todayName = this.shadowRoot.querySelector('#nameday');
+        var todayName = this.shadowRoot.querySelector('#nameday'),
 
-        var customDayTag = this.shadowRoot.querySelector('#customdaytag');
-        var customDate = this.shadowRoot.querySelector('#customDate');
+            customDateTag = this.shadowRoot.querySelector('#customDateTag'),
+            customDate = this.shadowRoot.querySelector('#customDate'),
 
-        var customNameTag = this.shadowRoot.querySelector('#customnametag');
-        var customName = this.shadowRoot.querySelector('#customName');
+            customNameTag = this.shadowRoot.querySelector('#customnametag'),
+            customName = this.shadowRoot.querySelector('#customName'),
+
+            invalidDate = this.shadowRoot.querySelector('#invalidDate'),
+            customName = this.shadowRoot.querySelector('#customName');
+
 
         //nacitanie xml suboru s meninami cez fetch()
         fetch("resources/meniny.xml")
@@ -102,7 +114,7 @@ class NameDay extends HTMLElement {
             })
             //
             .then(function(data) {
-                // Toto je elektro ty omezený ko-kot-ko, najlepší hip hop festival tu robí jo-po-po,
+                // Toto je elektro ty omezený ko-kot-ko, najlepší hip hop festival tu robí jo-po-po
                 var parser = new DOMParser();
                 // nacitanie xml suboru do premennej xmlDoc
                 var xmlDoc = parser.parseFromString(data, "text/xml");
@@ -111,11 +123,13 @@ class NameDay extends HTMLElement {
                     todayDay = today.getDate(), //vrati den v mesiaci
                     todayMonth = today.getMonth() + 1; // getMonth() vracia mesiace od 0-januar po 11-december, preto + 1
 
-                //prehladavanie celeho suboru, strasne neefektivne lebo sa to robi spolu 3x, lepsie by bolo dat to do pola a ptm porovnavt s polom, ale neoplati sa s tym trapit, body za to nestrhnu hadam
+                //prehladavanie celeho suboru, strasne neefektivne, lepsie by bolo dat to do pola a ptm porovnavat s polom, ale neoplati sa s tym trapit, body za to nestrhnu hadam
                 while (i < xmlDoc.getElementsByTagName("zaznam").length) {
+
                     day = xmlDoc.getElementsByTagName("den")[i];
                     // ak sa dnesny datum zhoduje s datumom v tagu <den> v xml subore, vypise ho aj s meninami
                     if (day.innerHTML === "" + todayMonth + todayDay) {
+
                         todayName.innerText = "Kto sa dnes " + todayDay + "." + todayMonth + "." + " nachňápe jak riť?  --> " + day.nextElementSibling.innerHTML;
                     }
                     i++;
@@ -124,29 +138,44 @@ class NameDay extends HTMLElement {
                 // to iste ako vyssie, len to berie custom datum, nie dnesny datum
                 // pridanie addeventlisteneru, ak sa datum v inpute zmeni, treba prehladat subor a najst nove meno
                 customDate.addEventListener('change', () => {
-                    // spracovanie udajov zo vstupu, datum musi byt v presnom formate, trebalo by prerobit podla zadania
-                    var customMonth = customDate.value.slice(5, 7), //slice(start, end) orezava dany string
-                        customDay = customDate.value.slice(8, 10),
-                        customDateString = String(customMonth + customDay),
-                        i = 0,
-                        dayXML;
-
-                    //pokus spravit validaciu datumu cez regex, ak sa o to niekto pokusa tak treba v template zmenit <input id="customDate">
-                                                    // z typu date na text, aby sa dal zadat custom datum ako text nie len vyberat z kalendara
-                    // customDate = customDate.value;
-                    // var regex = new RegExp("^([0-3])?[0-9][.]([0-1])?[0-12][.]$");
-                    // if(regex.test(customDate)){
-
-                    //prehladavanie suboru, dokym nenajde meno v dany datum
-                    while (i < xmlDoc.getElementsByTagName("zaznam").length) {
-                        dayXML = xmlDoc.getElementsByTagName("den")[i];
-                        if (dayXML.innerHTML === customDateString) {
-                            customDayTag.innerText = customDay + "." + customMonth + ". sa dobľuje " + dayXML.nextElementSibling.innerHTML;
-                            break;
-                        }
-                        i++;
+                    // spracovanie udajov zo vstupu
+                    var i = 0,
+                        dayXML,
+                        regex = new RegExp("^\\d{1,2}[.]\\d{1,2}[.]$", "g"),//prepusti len platny datum bez roku oddeleny bodkami
+                        customDateVal = customDate.value,
+                        correctDate = regex.test(customDate.value), // true ak splna podmienky regexu, inak false
+                        splitstring = customDate.value.split('.');//rozdeli vstupny string do pola, oddelovac je bodka
+                
+                    // uprava dna a mesiaca z vstupu
+                    if (splitstring[0] && splitstring[0].length == 1){// ak uzivatel zada napr 1.1. tak to zmeni na 01.1. aby to ptm vedel najst v xml
+                        
+                        splitstring[0] ="0" + splitstring[0];
                     }
-                    // }
+                    if (splitstring[1] && splitstring[1].length == 1){// ak uzivatel zada napr 1.1. tak to zmeni na 1.01. aby to ptm vedel najst v xml
+                        
+                        splitstring[1] ="0" + splitstring[1];
+                    }
+
+                    // ak je datum spravny, prehladava sa xml
+                    if(correctDate == true  &&  (splitstring[0] <= 31 && splitstring[0] > 0)   &&  (splitstring[1] <= 12 && splitstring[1] > 0)) {
+                        
+                        invalidDate.style.display = 'none'; // ak je datum spravny, napoveda sa skryje
+
+                        while (i < xmlDoc.getElementsByTagName("zaznam").length) {//pokial je i mensie ako pocet tagov <zaznam> v xml
+
+                            dayXML = xmlDoc.getElementsByTagName("den")[i];//do dayXML sa vlozi datum aktualneho tagu v xml
+                            if (dayXML.innerHTML === ("" + splitstring[1] + splitstring[0])) {
+
+                                customDateTag.innerText = splitstring[0] + "." + splitstring[1] + ". sa dobľuje " + dayXML.nextElementSibling.innerHTML;
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                    else{
+                        //ak je datum nespravne zadany, zobrazi sa napoveda
+                        invalidDate.style.display = 'block';
+                    }
                 });
 
                 //zase to iste co vyssie, ale tu hlada podla menin a vypisuje den kedy ma ten šupák meniny
@@ -157,9 +186,9 @@ class NameDay extends HTMLElement {
                         nameXML, dateXML;
                     
                     //maximalne ide len pocetDniKedyMaNiektoMeniny-krat, lebo nie kazdy den ma niekto meniny - napr 1.1.
-                    while (i < xmlDoc.getElementsByTagName("SK").length) {
+                    while (i < xmlDoc.getElementsByTagName("SK").length) { //pokial je i mensie ako pocet tagov <SK> v xml (tag <SK> = meniny na SVK)
                         nameXML = xmlDoc.getElementsByTagName("SK")[i];
-                        //previousElementSibling zobrazi predchadzajuceho surodenca tagu v xml subore
+                        //previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
                         dateXML = nameXML.previousElementSibling.innerHTML;
                         if (nameXML.innerHTML.includes(inputNameCapital)) { // ak meno obsahuje substring ktory sme zadali, vypise
                             customNameTag.innerText = nameXML.innerHTML + " sa zruší " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";
