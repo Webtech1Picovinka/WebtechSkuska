@@ -265,11 +265,13 @@ class NameDay extends HTMLElement {
 
                             if(arrayOfNamesWithoutDiacriticXML[1]){//ak su v dany den 2 meniny-->arrayOfNamesWithoutDiacriticXML[1] bude existovat, inak nie
 
+                                //ak sa prve meno z xml rovna vstupu
                                 if (arrayOfNamesWithoutDiacriticXML[0] === inputNameCapitalWithoutDiacritics) {
-                                    customNameTag.style.visibility = 'visible';
+                                    customNameTag.style.visibility = 'visible';//zobrazi sa tag kam sa ma vpisovat meno
                                     customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
                                     }
 
+                                    //ak sa druhe meno z xml rovna vstupu
                                 if (arrayOfNamesWithoutDiacriticXML[1].trim() === inputNameCapitalWithoutDiacritics){//trim() oreze medzery zo zaciatku a konca
                                     customNameTag.style.visibility = 'visible';
                                     customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
