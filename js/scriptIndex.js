@@ -247,24 +247,23 @@ class NameDay extends HTMLElement {
                         while (i < xmlDoc.getElementsByTagName("SK").length) { //pokial je i mensie ako pocet tagov <SK> v xml (tag <SK> = meniny na SVK)
                             nameXML = xmlDoc.getElementsByTagName("SK")[i];
                             dateXML = nameXML.previousElementSibling.innerHTML;//previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
-                            nameXMLWithoutDiacritics = removeDiacritics(nameXML.innerHTML);
-                            arrayOfNamesWithoutDiacriticXML = nameXMLWithoutDiacritics.split(',');
+                            nameXMLWithoutDiacritics = removeDiacritics(nameXML.innerHTML);//odstranenie diakritiky zo stringu z xml
+                            arrayOfNamesWithoutDiacriticXML = nameXMLWithoutDiacritics.split(',');//rozdelenie stringu do pola, rozdelovac ciarka
 
-                            if(arrayOfNamesWithoutDiacriticXML[1]){
+                            if(arrayOfNamesWithoutDiacriticXML[1]){//ak su v dany den 2 meniny-->arrayOfNamesWithoutDiacriticXML[1] bude existovat, inak nie
 
                                 if (arrayOfNamesWithoutDiacriticXML[0] === inputNameCapitalWithoutDiacritics) {
                                     customNameTag.style.visibility = 'visible';
                                     customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
                                     }
 
-                                if (arrayOfNamesWithoutDiacriticXML[1].trim() === inputNameCapitalWithoutDiacritics){
+                                if (arrayOfNamesWithoutDiacriticXML[1].trim() === inputNameCapitalWithoutDiacritics){//trim() oreze medzery zo zaciatku a konca
                                     customNameTag.style.visibility = 'visible';
                                     customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
                                     }
 
                             }
-                            else{
-                                // array0Equals = arrayOfNamesWithoutDiacriticXML[0].equals(inputNameCapitalWithoutDiacritics.toString());
+                            else{//ak je v dany den len jedno meno
                                 if (arrayOfNamesWithoutDiacriticXML[0] === inputNameCapitalWithoutDiacritics) {
                                     customNameTag.style.visibility = 'visible';
                                     customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
