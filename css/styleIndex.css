@@ -16,7 +16,18 @@ body {
 
 .nameDayContainer{
     padding: 3%;
-    background-color:  rgba(18, 18, 19, 0.5);
+    background-color: rgba(18, 18, 19, 0.5);
+}
+
+
+/* Style the hamburger menu */
+
+.fa,
+.fa-bars {
+    float: left;
+    color: black;
+    position: absolute;
+    margin: -43px 130px;
 }
 
 .third-level-menu {
@@ -83,7 +94,7 @@ body {
 
 .top-level-menu li:hover>ul {
     /* On hover, display the next level's menu */
-    display: inline;
+    display: inline !important;
 }
 
 

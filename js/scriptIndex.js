@@ -43,7 +43,7 @@ class MyComponent extends HTMLElement {
         <ul class="top-level-menu">
             <li>
             <a href="html/tim.html">Tím</a>
-            <ul class="second-level-menu">
+            <ul class="second-level-menu" id="second-level-menu">
                 <li><a>Daniel Nošík</a>
                     <ul class="third-level-menu">
                         <li><a href="html/gameDano.html">Hra</a></li>
@@ -70,10 +70,23 @@ class MyComponent extends HTMLElement {
                 </li>
             </ul>
         </ul>
+        <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+        <a href="javascript:void(0);" class="d-md-none d-sm-none d-xs-block" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
         `;
     }
 }
 customElements.define('menu-menu', MyComponent);
+
+function myFunction() {
+    var x = document.getElementById("second-level-menu");
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        x.style.display = "block";
+    }
+}
 
 
 
