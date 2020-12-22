@@ -156,9 +156,14 @@ function end() {
         document.getElementById("topOverlay").style.display = "block";
         document.getElementById("overlay").style.display = "block";
         document.getElementById("end").style.display = "block";
+        document.getElementById("restart").style.display = "block";
         document.getElementById("start").style.display = "none";
         document.getElementById("demo").style.display = "none";
         document.getElementById("note").style.display = "none";
         document.getElementById("cislo").innerHTML = sekunda;
     }
+}
+
+function restart() {
+    location.reload();
 }
