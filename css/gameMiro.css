@@ -231,6 +231,7 @@ img {
     position: relative;
     display: none;
     text-align: center;
+    color: white;
     font-size: 2.2vw;
     top: 2vw;
 }
