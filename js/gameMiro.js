@@ -15,8 +15,8 @@ $(document).ready(function() {
                 return;
             }
             $('#ba').animate({
-                top: "38.25%",
-                left: "0.8%"
+                top: "-7.38vw",
+                left: "-39.2vw"
             });
             ba = true;
             end();
@@ -30,8 +30,8 @@ $(document).ready(function() {
                 return;
             }
             $('#tt').animate({
-                top: "30.7%",
-                left: "2%"
+                top: "6.68vw",
+                left: "-56vw"
             });
             tt = true;
             end();
@@ -45,8 +45,8 @@ $(document).ready(function() {
                 return;
             }
             $('#tn').animate({
-                top: "18.3%",
-                left: "6.45%"
+                top: "-16.15vw",
+                left: "-41.5vw"
             });
             tn = true;
             end();
@@ -60,8 +60,8 @@ $(document).ready(function() {
                 return;
             }
             $('#nr').animate({
-                top: "37.3%",
-                left: "8.8%"
+                top: "-12.6vw",
+                left: "-54.15vw"
             });
             nr = true;
             end();
@@ -75,8 +75,8 @@ $(document).ready(function() {
                 return;
             }
             $('#za').animate({
-                top: "10.8%",
-                left: "17.45%"
+                top: "-29.2vw",
+                left: "-17.5vw"
             });
             za = true;
             end();
@@ -90,8 +90,8 @@ $(document).ready(function() {
                 return;
             }
             $('#bb').animate({
-                top: "32.5%",
-                left: "17.6%"
+                top: "10.38vw",
+                left: "-54.3vw"
             });
             bb = true;
             end();
@@ -105,8 +105,8 @@ $(document).ready(function() {
                 return;
             }
             $('#po').animate({
-                top: "18.1%",
-                left: "32.55%"
+                top: "-12.95vw",
+                left: "-35.45vw"
             });
             po = true;
             end();
@@ -120,8 +120,8 @@ $(document).ready(function() {
                 return;
             }
             $('#ke').animate({
-                top: "31.8%",
-                left: "35.1%"
+                top: "-20.45vw",
+                left: "25.2vw"
             });
             ke = true;
             end();
@@ -159,7 +159,6 @@ function end() {
         document.getElementById("restart").style.display = "block";
         document.getElementById("start").style.display = "none";
         document.getElementById("demo").style.display = "none";
-        document.getElementById("note").style.display = "none";
         document.getElementById("cislo").innerHTML = sekunda;
     }
 }
