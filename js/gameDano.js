@@ -5,7 +5,7 @@ const pozadie = new PIXI.Sprite(texture);
 app.stage.addChild(pozadie);
 
 var score =0;
-
+const toolsStorage = [];
 
 
 
@@ -49,7 +49,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
         tool.x = x;
         tool.y = y;
 
-        
+        toolsStorage.push(tool);
+
         app.stage.addChild(tool);
     }
 
@@ -104,6 +105,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
 });
 
 
+
+
+var i = 0;                 
+
+function demo() {  
+  setTimeout(function() {   
+    const tool = toolsStorage[i];
+    tool.x = tool.x1;
+    tool.y = tool.y1;
+    i++;                    
+    if (i < 9) {          
+      demo();             
+    }                       
+  }, 1000)
+}
 
 
 var c = 0;
