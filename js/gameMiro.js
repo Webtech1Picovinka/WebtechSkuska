@@ -148,6 +148,63 @@ function start() {
 function demo() {
     document.getElementById("topOverlay").style.display = "none";
     document.getElementById("overlay").style.display = "none";
+    $('#ba').animate({
+        top: "-7.38vw",
+        left: "-39.2vw"
+    });
+    setTimeout((function() {
+        $('#tt').animate({
+            top: "6.68vw",
+            left: "-56vw"
+        });
+    }), 1000);
+    setTimeout((function() {
+        $('#tn').animate({
+            top: "-16.15vw",
+            left: "-41.5vw"
+        });
+    }), 2000);
+    setTimeout((function() {
+        $('#nr').animate({
+            top: "-12.6vw",
+            left: "-54.15vw"
+        });
+    }), 3000);
+    setTimeout((function() {
+        $('#za').animate({
+            top: "-29.2vw",
+            left: "-17.5vw"
+        });
+    }), 4000);
+    setTimeout((function() {
+        $('#bb').animate({
+            top: "10.38vw",
+            left: "-54.3vw"
+        });
+    }), 5000);
+    setTimeout((function() {
+        $('#po').animate({
+            top: "-12.95vw",
+            left: "-35.45vw"
+        });
+    }), 6000);
+    setTimeout((function() {
+        $('#ke').animate({
+            top: "-20.45vw",
+            left: "25.2vw"
+        });
+    }), 7000);
+    ba = true;
+    tt = true;
+    tn = true;
+    nr = true;
+    za = true;
+    bb = true;
+    po = true;
+    ke = true;
+    setTimeout((function() {
+        end();
+    }), 8000);
 }
 
 function end() {
