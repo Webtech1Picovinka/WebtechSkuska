@@ -1,5 +1,19 @@
-head, body{
-    height: 100%;
-    margin: 0;
+body{
+    background-image: url("../images/gameDano/bgfo.jpg");
+    height: auto;
+    width: 100%;
+    margin: 0 ;
     padding: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  
+}
+
+#score{
+    background-color: rgba(187, 146, 97, 0.473);
+}
+
+#txt{
+    background-color: rgba(187, 146, 97, 0.473);
 }
