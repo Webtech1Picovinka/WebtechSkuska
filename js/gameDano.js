@@ -1,6 +1,6 @@
 const app = new PIXI.Application({ width: 705, height: 750});
 document.getElementById("game").appendChild(app.view);
-const texture = PIXI.Texture.from('assets/bg.png');
+const texture = PIXI.Texture.from('../images/gameDano/assets/bg.png');
 const pozadie = new PIXI.Sprite(texture);
 app.stage.addChild(pozadie);
 
