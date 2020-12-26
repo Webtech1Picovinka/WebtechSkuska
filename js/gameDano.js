@@ -70,8 +70,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
         this.dragging = false;
 
 
+        var text = document.getElementById("score");
         
-        if(this.x > this.x1 - 20 && this.x < this.x1 + 20 && this.y > this.y1 - 20 && this.y < this.y1 + 20){
+        if((this.x > this.x1 - 10 && this.x < this.x1 + 10 )&& (this.y > this.y1 - 10 && this.y < this.y1 + 10)){
             this.x = this.x1;
             this.y = this.y1;
             this.interactive = false;
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 stopCount();
             }
         
-            var text = document.getElementById("score");
+            
             if(score <8 )
                 text.innerText = "Vaše skóre je " + score;
             else
