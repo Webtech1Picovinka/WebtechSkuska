@@ -1,5 +1,19 @@
-head, body{
-    height: 100%;
+head,
+body {
+    height: auto;
+    width: 100%;
     margin: 0;
-    padding: 0;
+    background-repeat: no-repeat;
+    background-size: initial;
+    background-position: right;
+    background-image: url("../images/gameKuboImages/pozadie.jpg");
+    background-attachment: fixed;
+}
+
+.col-md {
+  
+  padding-bottom: 10px;
+}
+h4{
+  color: red;
 }
