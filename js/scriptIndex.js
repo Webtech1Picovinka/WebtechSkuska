@@ -177,6 +177,12 @@ class NameDay extends HTMLElement {
                     todayDay = today.getDate(), //vrati den v mesiaci
                     todayMonth = today.getMonth() + 1; // getMonth() vracia mesiace od 0-januar po 11-december, preto + 1
 
+                if (todayDay < 10){
+                    todayDay = "0" + todayDay;
+                }
+                if (todayMonth < 10){
+                    todayMonth = "0" + todayMonth;
+                }
                 //prehladavanie celeho suboru
                 while (i < xmlDoc.getElementsByTagName("zaznam").length) {
 
