@@ -331,20 +331,10 @@ templateForCounter.innerHTML =
 
 class countVisits extends HTMLElement {
     constructor() {
-<<<<<<< HEAD
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(templateForCounter.content.cloneNode(true));
     }
-=======
-            super();
-            this.attachShadow({ mode: 'open' });
-            this.shadowRoot.appendChild(templateForCounter.content.cloneNode(true));
-        }
-        // ...hateri sú v piči já zarabámm ešte váááác,
-        // popritom si spievam iba také nananáá,
-        // s týmto textom mi pomáhala moja mamááááá.
->>>>>>> b6daf3a399a95db4342338ee7486fa8becc7a3fc
 
     connectedCallback() {
         document.addEventListener("DOMContentLoaded", () => {
