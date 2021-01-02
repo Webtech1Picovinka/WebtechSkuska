@@ -1,6 +1,6 @@
 //funkcia ktora odstrani specialne slovenske znaky a nahradi ich normalnymi
 function removeDiacritics(str) {
-    var map = { ///pls doplnit, aj velke pismena; VELKE staci len tie na ktore zacina nejake meno, napr velke ä netreba
+    var map = {
         'a' : 'á|ä',
         'c' : 'č',
         'd' : 'ď',
@@ -143,7 +143,6 @@ template.innerHTML =
 
 class NameDay extends HTMLElement {
 
-    //toto ani srnka netusi naco to tu je, ale asi nejaky konstruktor
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -169,9 +168,8 @@ class NameDay extends HTMLElement {
             .then(function(resp) {
                 return resp.text();
             })
-            //
+            
             .then(function(data) {
-                // Toto je elektro ty omezený ko-kot-ko, najlepší hip hop festival tu robí jo-po-po
                 var parser = new DOMParser();
                 // nacitanie xml suboru do premennej xmlDoc
                 var xmlDoc = parser.parseFromString(data, "text/xml");
@@ -180,7 +178,7 @@ class NameDay extends HTMLElement {
                     todayDay = today.getDate(), //vrati den v mesiaci
                     todayMonth = today.getMonth() + 1; // getMonth() vracia mesiace od 0-januar po 11-december, preto + 1
 
-                //prehladavanie celeho suboru, strasne neefektivne, lepsie by bolo dat to do pola a ptm porovnavat s polom, ale neoplati sa s tym trapit, body za to nestrhnu hadam
+                //prehladavanie celeho suboru
                 while (i < xmlDoc.getElementsByTagName("zaznam").length) {
 
                     day = xmlDoc.getElementsByTagName("den")[i];
@@ -238,7 +236,7 @@ class NameDay extends HTMLElement {
 
 
 
-                //zase to iste co vyssie, ale tu hlada podla mena a vypisuje den kedy ma ten šupák meniny
+                //zase to iste co vyssie, ale tu hlada podla mena a vypisuje den
                 customName.addEventListener('change', () => {
                     var i = 0,
                         nameXML, 
@@ -341,9 +339,6 @@ class countVisits  extends HTMLElement {
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(templateForCounter.content.cloneNode(true));
     }
-    // ...hateri sú v piči já zarabámm ešte váááác,
-    // popritom si spievam iba také nananáá,
-    // s týmto textom mi pomáhala moja mamááááá.
 
     connectedCallback() {
       document.addEventListener("DOMContentLoaded", ()=>{
