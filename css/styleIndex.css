@@ -10,25 +10,28 @@ body {
     background-attachment: fixed;
 }
 
-.container{
+.container {
     margin-left: 0;
 }
 
-.nameDayContainer{
+.nameDayContainer {
     padding: 3%;
     background-color: rgba(18, 18, 19, 0.5);
 }
 
 
-/* Style the hamburger menu */
+/* menu prisposobenie mobil */
 
 .fa,
 .fa-bars {
     float: left;
-    color: black;
+    color: white;
     position: absolute;
     margin: -43px 130px;
 }
+
+
+/* menu */
 
 .third-level-menu {
     position: absolute;
@@ -43,17 +46,16 @@ body {
 
 .third-level-menu>li {
     height: 30px;
-    background: #999999;
+    background: rgb(120, 120, 120);
 }
 
 .third-level-menu>li:hover {
-    background: #CCCCCC;
+    background: rgb(165, 165, 165);
 }
 
 .second-level-menu {
     position: absolute;
     top: 30px;
-    left: 0;
     width: 150px;
     list-style: none;
     padding: 0;
@@ -66,17 +68,16 @@ body {
     color: white;
     position: relative;
     height: 30px;
-    background: #999999;
+    background: rgb(120, 120, 120);
 }
 
 .second-level-menu>li:hover {
-    background: #CCCCCC;
-    color: black;
+    background: rgb(165, 165, 165);
 }
 
 .top-level-menu {
     list-style: none;
-    padding: 0px 0px 50px 0px;
+    padding: 0px 0px 50px;
     margin: 0;
 }
 
@@ -85,43 +86,36 @@ body {
     float: left;
     height: 30px;
     width: 150px;
-    background: #999999;
+    background: rgb(120, 120, 120);
 }
 
 .top-level-menu>li:hover {
-    background: #CCCCCC;
+    background: rgb(165, 165, 165);
 }
 
 .top-level-menu li:hover>ul {
-    /* On hover, display the next level's menu */
     display: inline !important;
 }
 
-
-/* Menu Link Styles */
-
 .top-level-menu a {
-    font: bold 14px Arial, Helvetica, sans-serif;
-    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
     text-decoration: none;
-    padding: 0 0 0 10px;
-    /* Make the link cover the entire list item-container */
+    padding-left: 10px;
     display: block;
-    line-height: 30px;
-}
-
-.top-level-menu a:hover {
-    color: #000000;
+    line-height: 28px;
 }
 
 
 /*footer styling*/
-footer{
-    width:100%; 
-    bottom:0;
-    left:0;
+
+footer {
+    width: 100%;
+    bottom: 0;
+    left: 0;
     color: rgb(253, 253, 253);
-    background-color:  rgba(18, 18, 19, 0.5);
+    background-color: rgba(18, 18, 19, 0.5);
     text-align: center;
     position: absolute;
     width: 100%;

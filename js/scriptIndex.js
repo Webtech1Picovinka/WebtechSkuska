@@ -28,7 +28,7 @@ function removeDiacritics(str) {
         'Y' : 'Ý',
         'Z' : 'Ž',
     };
-    
+
     for (var pattern in map) {
         str = str.replace(new RegExp(map[pattern], 'g'), pattern);
     };
@@ -70,8 +70,7 @@ class MyComponent extends HTMLElement {
                 </li>
             </ul>
         </ul>
-        <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
-        <a href="javascript:void(0);" class="d-md-none d-sm-none d-xs-block" onclick="myFunction()">
+        <a href="javascript:void(0);" class="d-md-none d-sm-block d-xs-block" onclick="myFunction()">
             <i class="fa fa-bars"></i>
         </a>
         `;
@@ -185,7 +184,7 @@ class NameDay extends HTMLElement {
                     // ak sa dnesny datum zhoduje s datumom v tagu <den> v xml subore, vypise ho aj s meninami
                     if (day.innerHTML === "" + todayMonth + todayDay) {
 
-                        todayName.innerText = "Dnes " + todayDay + "." + todayMonth + "." + " má meniny " + day.nextElementSibling.innerHTML;//vytvori tex ktory sa vypise na obrazovku
+                        todayName.innerText = "Dnes " + todayDay + "." + todayMonth + "." + " má meniny " + day.nextElementSibling.innerHTML; //vytvori tex ktory sa vypise na obrazovku
                     }
                     i++;
                 }
@@ -198,37 +197,36 @@ class NameDay extends HTMLElement {
                     // spracovanie udajov zo vstupu
                     var i = 0,
                         dayXML,
-                        regex = new RegExp("^\\d{1,2}[.]\\d{1,2}[.]$", "g"),//prepusti len platny datum bez roku oddeleny bodkami
+                        regex = new RegExp("^\\d{1,2}[.]\\d{1,2}[.]$", "g"), //prepusti len platny datum bez roku oddeleny bodkami
                         correctDate = regex.test(customDate.value), // true ak vstup splna podmienky regexu, inak false
-                        splitstring = customDate.value.split('.');//rozdeli vstupny string do pola, oddelovac je bodka
-                
+                        splitstring = customDate.value.split('.'); //rozdeli vstupny string do pola, oddelovac je bodka
+
                     // uprava dna a mesiaca z vstupu
-                    if (splitstring[0] && splitstring[0].length == 1){// ak uzivatel zada napr 1.1. tak to zmeni na 01.1. aby to ptm vedel najst v xml
-                        
-                        splitstring[0] ="0" + splitstring[0];
+                    if (splitstring[0] && splitstring[0].length == 1) { // ak uzivatel zada napr 1.1. tak to zmeni na 01.1. aby to ptm vedel najst v xml
+
+                        splitstring[0] = "0" + splitstring[0];
                     }
-                    if (splitstring[1] && splitstring[1].length == 1){// ak uzivatel zada napr 1.1. tak to zmeni na 1.01. aby to ptm vedel najst v xml
-                        
-                        splitstring[1] ="0" + splitstring[1];
+                    if (splitstring[1] && splitstring[1].length == 1) { // ak uzivatel zada napr 1.1. tak to zmeni na 1.01. aby to ptm vedel najst v xml
+
+                        splitstring[1] = "0" + splitstring[1];
                     }
 
                     // ak je datum spravny, prehladava sa xml
-                    if(correctDate == true  &&  (splitstring[0] <= 31 && splitstring[0] > 0)   &&  (splitstring[1] <= 12 && splitstring[1] > 0)) {
+                    if (correctDate == true && (splitstring[0] <= 31 && splitstring[0] > 0) && (splitstring[1] <= 12 && splitstring[1] > 0)) {
                         invalidDate.style.display = 'none'; // ak je datum spravny, napoveda sa skryje
 
-                        while (i < xmlDoc.getElementsByTagName("zaznam").length) {//pokial je i mensie ako pocet tagov <zaznam> v xml
-                            dayXML = xmlDoc.getElementsByTagName("den")[i];//do dayXML sa vlozi datum aktualneho tagu v xml
+                        while (i < xmlDoc.getElementsByTagName("zaznam").length) { //pokial je i mensie ako pocet tagov <zaznam> v xml
+                            dayXML = xmlDoc.getElementsByTagName("den")[i]; //do dayXML sa vlozi datum aktualneho tagu v xml
 
                             if (dayXML.innerHTML === ("" + splitstring[1] + splitstring[0])) {
 
-                                customDateTag.style.visibility = 'visible';//ak je tag skryty, zobrazi ho
-                                customDateTag.innerText = splitstring[0] + "." + splitstring[1] + ". má meniny " + dayXML.nextElementSibling.innerHTML;//vytvori tex ktory sa vypise na obrazovku
+                                customDateTag.style.visibility = 'visible'; //ak je tag skryty, zobrazi ho
+                                customDateTag.innerText = splitstring[0] + "." + splitstring[1] + ". má meniny " + dayXML.nextElementSibling.innerHTML; //vytvori tex ktory sa vypise na obrazovku
                                 break;
                             }
                             i++;
                         }
-                    }
-                    else{
+                    } else {
                         //ak je datum nespravne zadany, zobrazi sa napoveda
                         invalidDate.style.display = 'block';
                     }
@@ -239,53 +237,51 @@ class NameDay extends HTMLElement {
                 //zase to iste co vyssie, ale tu hlada podla mena a vypisuje den
                 customName.addEventListener('change', () => {
                     var i = 0,
-                        nameXML, 
+                        nameXML,
                         arrayOfNamesXML,
                         nameXMLWithoutDiacritics,
                         arrayOfNamesWithoutDiacriticXML,
                         array0Equals,
                         array1Equals,
                         dateXML,
-                        inputNameCapital = customName.value[0].toUpperCase() + customName.value.slice(1),//ak uzivatel zada meno s malym pismenom na zaciatku, da ho na velke
-                        regex = new RegExp("^[^0-9]{1,}$"),//prepusti len pismena, cisla nie
-                        correctName = regex.test(customName.value),// true ak vstup splna podmienky regexu, inak false
+                        inputNameCapital = customName.value[0].toUpperCase() + customName.value.slice(1), //ak uzivatel zada meno s malym pismenom na zaciatku, da ho na velke
+                        regex = new RegExp("^[^0-9]{1,}$"), //prepusti len pismena, cisla nie
+                        correctName = regex.test(customName.value), // true ak vstup splna podmienky regexu, inak false
                         inputNameCapitalWithoutDiacritics = removeDiacritics(inputNameCapital);
-                    
-                    if(correctName == true){
-                        invalidName.style.display = 'none';// ak je meno spravne, upozornenie sa skryje
+
+                    if (correctName == true) {
+                        invalidName.style.display = 'none'; // ak je meno spravne, upozornenie sa skryje
 
                         //maximalne ide len pocetDniKedyMaNiektoMeniny-krat, lebo nie kazdy den ma niekto meniny - napr 1.1.
                         while (i < xmlDoc.getElementsByTagName("SK").length) { //pokial je i mensie ako pocet tagov <SK> v xml (tag <SK> = meniny na SVK)
                             nameXML = xmlDoc.getElementsByTagName("SK")[i];
-                            dateXML = nameXML.previousElementSibling.innerHTML;//previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
-                            nameXMLWithoutDiacritics = removeDiacritics(nameXML.innerHTML);//odstranenie diakritiky zo stringu z xml
-                            arrayOfNamesWithoutDiacriticXML = nameXMLWithoutDiacritics.split(',');//rozdelenie stringu do pola, rozdelovac ciarka
+                            dateXML = nameXML.previousElementSibling.innerHTML; //previousElementSibling zobrazi predchadzajuceho surodenca tagu <SK> v xml subore
+                            nameXMLWithoutDiacritics = removeDiacritics(nameXML.innerHTML); //odstranenie diakritiky zo stringu z xml
+                            arrayOfNamesWithoutDiacriticXML = nameXMLWithoutDiacritics.split(','); //rozdelenie stringu do pola, rozdelovac ciarka
 
-                            if(arrayOfNamesWithoutDiacriticXML[1]){//ak su v dany den 2 meniny-->arrayOfNamesWithoutDiacriticXML[1] bude existovat, inak nie
+                            if (arrayOfNamesWithoutDiacriticXML[1]) { //ak su v dany den 2 meniny-->arrayOfNamesWithoutDiacriticXML[1] bude existovat, inak nie
 
                                 //ak sa prve meno z xml rovna vstupu
                                 if (arrayOfNamesWithoutDiacriticXML[0] === inputNameCapitalWithoutDiacritics) {
-                                    customNameTag.style.visibility = 'visible';//zobrazi sa tag kam sa ma vpisovat meno
-                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
-                                    }
+                                    customNameTag.style.visibility = 'visible'; //zobrazi sa tag kam sa ma vpisovat meno
+                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + "."; //vytvori tex ktory sa vypise na obrazovku
+                                }
 
-                                    //ak sa druhe meno z xml rovna vstupu
-                                if (arrayOfNamesWithoutDiacriticXML[1].trim() === inputNameCapitalWithoutDiacritics){//trim() oreze medzery zo zaciatku a konca
+                                //ak sa druhe meno z xml rovna vstupu
+                                if (arrayOfNamesWithoutDiacriticXML[1].trim() === inputNameCapitalWithoutDiacritics) { //trim() oreze medzery zo zaciatku a konca
                                     customNameTag.style.visibility = 'visible';
-                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
-                                    }
+                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + "."; //vytvori tex ktory sa vypise na obrazovku
+                                }
 
-                            }
-                            else{//ak je v dany den len jedno meno
+                            } else { //ak je v dany den len jedno meno
                                 if (arrayOfNamesWithoutDiacriticXML[0] === inputNameCapitalWithoutDiacritics) {
                                     customNameTag.style.visibility = 'visible';
-                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + ".";//vytvori tex ktory sa vypise na obrazovku
-                                    }
+                                    customNameTag.innerText = nameXML.innerHTML + " má meniny " + dateXML.slice(2, 4) + "." + dateXML.slice(0, 2) + "."; //vytvori tex ktory sa vypise na obrazovku
+                                }
                             }
                             i++;
                         }
-                    }
-                    else{
+                    } else {
                         //ak je meno nespravne zadane, zobrazi sa upozornenie
                         invalidName.style.display = 'block';
                     }
@@ -304,8 +300,8 @@ let numberOfAccess = 1;
 
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
@@ -313,53 +309,63 @@ function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
     return "";
 }
 
 
 const templateForCounter = document.createElement('template');
-templateForCounter.innerHTML = 
-`<div>
+templateForCounter.innerHTML =
+    `<div>
   <p id="visit"></p>
 </div>
 `;
 
-class countVisits  extends HTMLElement {
+class countVisits extends HTMLElement {
     constructor() {
+<<<<<<< HEAD
         super();
         this.attachShadow({mode: 'open'});
         this.shadowRoot.appendChild(templateForCounter.content.cloneNode(true));
     }
+=======
+            super();
+            this.attachShadow({ mode: 'open' });
+            this.shadowRoot.appendChild(templateForCounter.content.cloneNode(true));
+        }
+        // ...hateri sú v piči já zarabámm ešte váááác,
+        // popritom si spievam iba také nananáá,
+        // s týmto textom mi pomáhala moja mamááááá.
+>>>>>>> b6daf3a399a95db4342338ee7486fa8becc7a3fc
 
     connectedCallback() {
-      document.addEventListener("DOMContentLoaded", ()=>{
-        var accessCookie = getCookie("accessCookie");
-        if (accessCookie != "") {
-          let tmp = parseInt(accessCookie);
-          tmp = tmp+1;
-          setCookie("accessCookie",tmp,365);
-            
-        } else {
-          setCookie("accessCookie", numberOfAccess, 365);
-            
-        }
-        
-        
-        let text = this.shadowRoot.querySelector('#visit')
-        text.innerText = "Našu stránku ste za posledný rok navštívili " + getCookie("accessCookie")  +"-krát";
-        
-      
-      });
-      
+        document.addEventListener("DOMContentLoaded", () => {
+            var accessCookie = getCookie("accessCookie");
+            if (accessCookie != "") {
+                let tmp = parseInt(accessCookie);
+                tmp = tmp + 1;
+                setCookie("accessCookie", tmp, 365);
+
+            } else {
+                setCookie("accessCookie", numberOfAccess, 365);
+
+            }
+
+
+            let text = this.shadowRoot.querySelector('#visit')
+            text.innerText = "Našu stránku ste za posledný rok navštívili " + getCookie("accessCookie") + "-krát";
+
+
+        });
+
 
     }
 }
