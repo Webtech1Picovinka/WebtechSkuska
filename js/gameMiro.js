@@ -19,6 +19,7 @@ $(document).ready(function() {
                 left: "-39.2vw"
             });
             ba = true;
+            ui.draggable.draggable('disable');
             end();
         }
     });
@@ -34,6 +35,7 @@ $(document).ready(function() {
                 left: "-56vw"
             });
             tt = true;
+            ui.draggable.draggable('disable');
             end();
         }
     });
@@ -49,6 +51,7 @@ $(document).ready(function() {
                 left: "-41.5vw"
             });
             tn = true;
+            ui.draggable.draggable('disable');
             end();
         }
     });
@@ -64,6 +67,7 @@ $(document).ready(function() {
                 left: "-54.15vw"
             });
             nr = true;
+            ui.draggable.draggable('disable');
             end();
         }
     });
@@ -79,6 +83,7 @@ $(document).ready(function() {
                 left: "-17.5vw"
             });
             za = true;
+            ui.draggable.draggable('disable');
             end();
         }
     });
@@ -94,6 +99,7 @@ $(document).ready(function() {
                 left: "-54.3vw"
             });
             bb = true;
+            ui.draggable.draggable('disable');
             end();
         }
     });
@@ -109,6 +115,7 @@ $(document).ready(function() {
                 left: "-35.45vw"
             });
             po = true;
+            ui.draggable.draggable('disable');
             end();
         }
     });
@@ -124,6 +131,7 @@ $(document).ready(function() {
                 left: "25.2vw"
             });
             ke = true;
+            ui.draggable.draggable('disable');
             end();
         }
     });
