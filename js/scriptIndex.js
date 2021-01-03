@@ -304,6 +304,8 @@ window.customElements.define('name-day', NameDay);
 // Funkcionalita počítania návštev užívatela (cookies) + webkomponent
 let numberOfAccess = 1;
 
+
+//funkcia na nastavenie cookies
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -311,6 +313,7 @@ function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
+//funkcia na prístup ku cookies podľa mena cookies
 function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -327,7 +330,7 @@ function getCookie(cname) {
     return "";
 }
 
-
+//šablona pre webkomponent počítadla prístupu na stránku 
 const templateForCounter = document.createElement('template');
 templateForCounter.innerHTML =
     `<div>
@@ -343,21 +346,22 @@ class countVisits extends HTMLElement {
     }
 
     connectedCallback() {
-        document.addEventListener("DOMContentLoaded", () => {
-            var accessCookie = getCookie("accessCookie");
-            if (accessCookie != "") {
+        document.addEventListener("DOMContentLoaded", () => { //EventListner pri načítavaní stranky
+            var accessCookie = getCookie("accessCookie"); //pristúpenie ku cookie užívateľa
+            
+            if (accessCookie != "") {  //Ak extistuje accessCookie tak užíváteľ stránku za posledný rok už navštívil, hodnota sa navyší a nastaví späť 
                 let tmp = parseInt(accessCookie);
                 tmp = tmp + 1;
                 setCookie("accessCookie", tmp, 365);
 
-            } else {
+            } else { //ak neexistuje cookie, užívateľ je na stránke po prvýkrát a cookie je nastavený hodnota 1 
                 setCookie("accessCookie", numberOfAccess, 365);
 
             }
 
 
-            let text = this.shadowRoot.querySelector('#visit')
-            text.innerText = "Našu stránku ste za posledný rok navštívili " + getCookie("accessCookie") + "-krát";
+            let text = this.shadowRoot.querySelector('#visit'); //vybratie z webkomponentu podľa ID a vloženie textu 
+            text.innerText = "Našu stránku ste za posledný rok navštívili " + getCookie("accessCookie") + "-krát"; //vloženie 
 
 
         });
@@ -365,4 +369,4 @@ class countVisits extends HTMLElement {
 
     }
 }
-window.customElements.define('count-visit', countVisits);
+window.customElements.define('count-visit', countVisits); //zadeklarovanie užívateľského taku webkomponentu 
