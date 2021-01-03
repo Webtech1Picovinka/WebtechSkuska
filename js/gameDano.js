@@ -7,7 +7,8 @@ app.stage.addChild(pozadie);
 var score =0;
 const toolsStorage = [];
 
-
+var buttonGame = document.getElementById("gameButton");
+buttonGame.innerText= "Hrať";
 
 document.addEventListener("DOMContentLoaded", ()=>{
     var textureTool;
@@ -31,7 +32,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
         tool.y1 = y1;
         tool.interactive = true;
         tool.buttonMode = true;
-        console.log(tool.id);
         // center the tool's anchor point
         tool.anchor.set(0.5);
 
@@ -78,15 +78,18 @@ document.addEventListener("DOMContentLoaded", ()=>{
             this.interactive = false;
             this.buttonMode = false;
             score++;
-            if(score== 8){
-                stopCount();
-            }
+    
         
             
-            if(score <8 )
+            if(score <8 ){
                 text.innerText = "Vaše skóre je " + score;
-            else
+                buttonGame.innerText ="Hrať znova";
+            }
+            else{
+                stopCount();
+                buttonGame.disabled = false;
                 text.innerText = "Vaše skóre je " + score + "   VYHRALI STE!!";
+            }
         }
  
         // set the interaction data to null
@@ -100,6 +103,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
             this.y = newPosition.y;
             if(score== 0){
                 startCount();
+                
             }
         }
     }
@@ -110,16 +114,26 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 var i = 0;                 
 
-function demo() {  
+function demo() {
+    for(let iter = 0;iter < 8;iter++){
+        toolsStorage[iter].interactive = false;
+        toolsStorage[iter].buttonMode = false;
+    }
+    buttonGame.disabled = true;
   setTimeout(function() {   
     const tool = toolsStorage[i];
     tool.x = tool.x1;
     tool.y = tool.y1;
     i++;                    
-    if (i < 9) {          
-      demo();             
+    if (i < 8) {          
+      demo();
+      if(i == 7){
+        buttonGame.disabled = false;
+        stopCount();
+      }             
     }                       
   }, 1000)
+ 
 }
 
 
